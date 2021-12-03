@@ -7,7 +7,6 @@ class MenuItems extends Model{
 
 //create attributes for model using init method
 MenuItems.init({
-    menu_id: DataTypes.INTEGER,
     menu_item_name: DataTypes.STRING,
     menu_item_price: DataTypes.DECIMAL
 }, {

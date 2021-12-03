@@ -1,5 +1,4 @@
-const {sequelize} = require('./db')
-const {Menu} = require('./menu')
+const {MenuItems, Menu, Restaurant, sequelize} = require('./index')
 
 describe('Menu table', () => {
     beforeAll(async() => {
@@ -15,7 +14,7 @@ describe('Menu table', () => {
         await Menu.bulkCreate(arrayOfMenus)
     })
 
-    test('menu can have name', async() => {
+    test('menu can have a name', async() => {
         const testMenu = await Menu.findOne({
             where: {
                 id: 1
@@ -31,6 +30,21 @@ describe('Menu table', () => {
             }
         });
         expect(testMenu.id).toBe(3)
+    })
+
+    test('restaurant id can be added to the menu table', async() => {
+        const insertRestaurant =  await Restaurant.create({restaurant_name: "Burger King"})
+        const testRestaurant = await Restaurant.findOne({
+            where: {
+                restaurant_name: 'Burger King'
+            }
+        })
+
+        const testMenu = await Menu.findAll()
+        await testRestaurant.addMenu(testMenu)
+
+        const menuList = await Menu.findAll()
+        expect(menuList[0].RestaurantId).toBe(1)
     })
 
 })

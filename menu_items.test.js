@@ -39,7 +39,7 @@ describe('Menu Items table', () => {
         expect(testMenuItem.id).toBe(2)
     })
 
-    test('menu can be added to a menu item', async() => {
+    test('menu can be added to menu item', async() => {
         const testMenuItems = await MenuItems.findAll({
             where: {
                 menu_item_name: 'chicken nuggets'

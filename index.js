@@ -4,6 +4,7 @@ const {sequelize, DataTypes, Model} = require('./db')
 const {MenuItems} = require('./menu_items')
 const {Menu} = require('./menu')
 const { Restaurant } = require('./restaurant')
+const {Customer} = require('./customer')
 const { Order } = require('./order')
 
 
@@ -13,9 +14,10 @@ MenuItems.belongsTo(Menu) //adds foreign key to musician instance to a specific 
 Menu.hasMany(MenuItems) //gives us sequelize methods for a one to many relationship
 Menu.belongsTo(Restaurant)
 Restaurant.hasMany(Menu)
-MenuItems.belongsTo(Order)
-Order.hasMany(MenuItems)
+Order.belongsTo(Customer)
+Customer.hasMany(Order)
+
 
 
 //export models with added associations
-module.exports = {MenuItems, Menu, Restaurant, sequelize}
+module.exports = {MenuItems, Menu, Restaurant, Customer, Order, sequelize}

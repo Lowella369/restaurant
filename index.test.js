@@ -1,5 +1,6 @@
 const { Customer } = require('./customer')
 const {MenuItems, Menu, Restaurant, sequelize} = require('./index')
+const { Order } = require('./order')
 
 
 describe('Restaurant Database', () => {
@@ -32,10 +33,14 @@ describe('Restaurant Database', () => {
             {menu_item_name: 'chicken nuggets', menu_item_price: 1.39},
         ]
 
+        //create instance of order model
+        await Order.create({menu_item: 'chicken nuggets', price: 4.17, qty: 3 })
+
         //added arrays to the db
         await Customer.bulkCreate(arrayOfCustomers)
         await Menu.bulkCreate(arrayOfMenus)
         await MenuItems.bulkCreate(arrayOfMenuItems)  
+        
     })
 
     //test cases for Restaurant model
@@ -206,5 +211,50 @@ describe('Restaurant Database', () => {
         expect(customerList[0].id).toBe(1)
     })
     //end here
+
+    //test cases for order model
+    test('customer can order', async() => {
+        const customer = await Customer.findOne({
+            where: {
+                cust_name: 'Jessica'
+            }
+        })
+
+        const orderList = await Order.findOne({
+            where: {
+                menu_item: 'chicken nuggets'
+            }
+        })
+
+        //add order to the customer
+        customer.addOrder(orderList)
+
+        //retrieve order in this customer
+        const getOrderlist = await customer.getOrders()
+
+        //assert that customer id is 1
+        expect(getOrderlist[0].CustomerId).toBe(1)
+    })
+
+    test('order has menu item', async() => {
+        //I didn't put a where or condition inside the findOne function since i only have 1 test data in my instance
+        const orderList = await Order.findOne()
+        const menuItemList = await MenuItems.findOne({
+            where: {
+                menu_item_name: 'chicken nuggets'
+            }
+        })
+
+        //add menu item to the order
+        orderList.addMenuItems(menuItemList)
+        
+        //retrieve menu item in this order
+        const getMenuItem = await orderList.getMenuItems()
+
+        //assert that menu item name is chicken nuggets in this order
+        expect(getMenuItem[0].menu_item_name).toBe('chicken nuggets')
+    })
+
+    //still have to create more test cases for order model
 
 })

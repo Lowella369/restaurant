@@ -16,6 +16,8 @@ Menu.belongsTo(Restaurant)
 Restaurant.hasMany(Menu)
 Order.belongsTo(Customer)
 Customer.hasMany(Order)
+MenuItems.belongsTo(Order)
+Order.hasMany(MenuItems)
 
 
 

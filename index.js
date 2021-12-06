@@ -10,7 +10,7 @@ const { Order } = require('./order')
 
 
 //association models
-MenuItems.belongsTo(Menu) //adds foreign key to musician instance to a specific band
+MenuItems.belongsTo(Menu) //adds foreign key to menuItems instance to a specific band
 Menu.hasMany(MenuItems) //gives us sequelize methods for a one to many relationship
 Menu.belongsTo(Restaurant)
 Restaurant.hasMany(Menu)
